@@ -52,15 +52,20 @@ def main_checker():
             unisat_account.response.data.detail = remove_duplicates(account=unisat_account)
 
             for item in unisat_account.response.data.detail:
+                message = f"#{index + 1} | {unisat_account.address} | " \
+                          f"{item.ticker}: transferable: {item.transferableBalance}, " \
+                          f"available: {item.availableBalance}, " \
+                          f"total: {item.overallBalance}."
+
                 if ticker_to_check == item.ticker:
                     total_token += item.overallBalance
                     total_accounts_with_token += 1
 
-                if ticker_to_check == item.ticker or item.ticker not in tickers_to_ignore:
-                    logger.info(f"#{index + 1} | {unisat_account.address} | "
-                                f"{item.ticker}: transferable: {item.transferableBalance}, "
-                                f"available: {item.availableBalance}, "
-                                f"total: {item.overallBalance}.")
+                if ticker_to_check:
+                    if ticker_to_check == item.ticker:
+                        logger.info(message)
+                elif item.ticker not in tickers_to_ignore:
+                    logger.info(message)
         else:
             logger.warning(f"#{index + 1} | {unisat_account.address} | empty.")
 
