@@ -10,7 +10,7 @@ this script parses [unisat](https://unisat.io/market) and print all of your brc2
 ## Screenshots
 <p align="center">Log example:</p>
 <p align="center">
-<img width="400" alt="image" src="./assets/log.png">
+<img width="800" alt="image" src="./assets/log.png">
 </p>
 
 ## Installation
