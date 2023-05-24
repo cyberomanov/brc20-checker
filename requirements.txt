@@ -1,2 +1,3 @@
-loguru==0.7.0pydantic==1.10.2
+loguru==0.7.0
+pydantic==1.10.2
 Requests==2.31.0
