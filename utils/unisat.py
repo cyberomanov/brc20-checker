@@ -14,6 +14,7 @@ async def get_unisat_response(address: str, client: httpx.AsyncClient) -> Unisat
 
     start = 0
     limit = 100
+    four_two_nine_sleep = 5
 
     while True:
         url = f"https://unisat.io/brc20-api-v2/address/{address}/brc20/summary?start={start}&limit={limit}"
@@ -32,14 +33,19 @@ async def get_unisat_response(address: str, client: httpx.AsyncClient) -> Unisat
                 start += 1
                 limit += 100
             else:
-                logger.error(f"{address} | unisat response error, code: {unisat_response.code}, msg: {unisat_response.msg}.")
+                logger.error(f"{address} | unisat response error, "
+                             f"code: {unisat_response.code}, "
+                             f"msg: {unisat_response.msg}.")
                 break
-        elif response.status_code == 429:
-            logger.error(f"{address} | response error, code: {response.status_code}, reason: {response.reason_phrase}.")
-            await asyncio.sleep(3)
         else:
-            logger.error(f"{address} | response error, code: {response.status_code}, reason: {response.reason_phrase}.")
-            break
+            logger.error(f"{address} | response error, "
+                         f"code: {response.status_code}, "
+                         f"reason: {response.reason_phrase}.")
+
+            if response.status_code == 429:
+                await asyncio.sleep(four_two_nine_sleep)
+            else:
+                break
 
     return unisat_account
 
