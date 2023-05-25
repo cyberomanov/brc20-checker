@@ -9,7 +9,7 @@ from datatypes import *
 from utils import read_addresses, remove_duplicates, get_btc_balance
 
 
-async def get_unisat_response(address: str, client: httpx.AsyncClient) -> UnisatAccount:
+async def get_unisat_account(address: str, client: httpx.AsyncClient) -> UnisatAccount:
     unisat_account = UnisatAccount()
 
     start = 0
@@ -33,12 +33,12 @@ async def get_unisat_response(address: str, client: httpx.AsyncClient) -> Unisat
                 start += 1
                 limit += 100
             else:
-                logger.error(f"{address} | unisat response error, "
+                logger.error(f"{address} | 'internal_unisat' response error, "
                              f"code: {unisat_response.code}, "
                              f"msg: {unisat_response.msg}.")
                 break
         else:
-            logger.error(f"{address} | response error, "
+            logger.error(f"{address} | 'get_unisat_account' response error, "
                          f"code: {response.status_code}, "
                          f"reason: {response.reason_phrase}.")
 
@@ -63,7 +63,7 @@ async def main_checker():
         timeout = httpx.Timeout(60)
         async with httpx.AsyncClient(timeout=timeout) as client:
             tasks = [
-                get_unisat_response(address=address, client=client),
+                get_unisat_account(address=address, client=client),
                 get_btc_balance(address=address, client=client)
             ]
             results = await asyncio.gather(*tasks)
