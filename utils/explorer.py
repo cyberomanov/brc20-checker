@@ -15,10 +15,10 @@ async def get_btc_balance(address: str, client: httpx.AsyncClient) -> ExplorerRe
         if response.status_code == 200:
             return ExplorerResponse.parse_obj(json.loads(response.content))
         elif response.status_code == 429:
-            logger.error(f"response error, code: {response.status_code}, reason: {response.reason_phrase}.")
-            await asyncio.sleep(1)
+            logger.error(f"{address} | response error, code: {response.status_code}, reason: {response.reason_phrase}.")
+            await asyncio.sleep(3)
         else:
-            logger.error(f"response error, code: {response.status_code}, reason: {response.reason_phrase}.")
+            logger.error(f"{address} | response error, code: {response.status_code}, reason: {response.reason_phrase}.")
             return ExplorerResponse(
                 address=address,
                 confirmed=0,
