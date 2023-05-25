@@ -34,6 +34,9 @@ async def get_unisat_response(address: str, client: httpx.AsyncClient) -> Unisat
             else:
                 logger.error(f"unisat response error, code: {unisat_response.code}, msg: {unisat_response.msg}.")
                 break
+        elif response.status_code == 429:
+            logger.error(f"response error, code: {response.status_code}, reason: {response.reason_phrase}.")
+            await asyncio.sleep(1)
         else:
             logger.error(f"response error, code: {response.status_code}, reason: {response.reason_phrase}.")
             break
