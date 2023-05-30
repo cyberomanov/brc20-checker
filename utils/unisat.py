@@ -4,9 +4,7 @@ import json
 import httpx
 from loguru import logger
 
-from config import *
 from datatypes import *
-from utils import read_addresses, remove_duplicates, get_btc_balance
 
 
 async def get_unisat_account(address: str, client: httpx.AsyncClient) -> UnisatAccount:
@@ -48,50 +46,3 @@ async def get_unisat_account(address: str, client: httpx.AsyncClient) -> UnisatA
                 break
 
     return unisat_account
-
-
-async def main_checker():
-    btc_denom = 100000000
-    btc_round = 5
-    btc_total = 0.0
-
-    total_token = 0
-    total_accounts_with_token = 0
-
-    addresses = read_addresses()
-    for index, address in enumerate(addresses):
-        timeout = httpx.Timeout(60)
-        async with httpx.AsyncClient(timeout=timeout) as client:
-            tasks = [
-                get_unisat_account(address=address, client=client),
-                get_btc_balance(address=address, client=client)
-            ]
-            results = await asyncio.gather(*tasks)
-            unisat_account, btc_balance = results[0], results[1]
-
-            btc_total += btc_balance.confirmed
-            message = f"#{index + 1} | {unisat_account.address} | " \
-                      f"{round(btc_balance.confirmed / btc_denom, btc_round)} $BTC"
-            if unisat_account.response.data.detail:
-                unisat_account.response.data.detail = remove_duplicates(account=unisat_account)
-
-                for item in unisat_account.response.data.detail:
-                    message_append = f" | [{item.ticker}] transferable: {item.transferableBalance}, " \
-                                     f"available: {item.availableBalance}, " \
-                                     f"total: {item.overallBalance}."
-
-                    if ticker_to_check == item.ticker:
-                        total_token += item.overallBalance
-                        total_accounts_with_token += 1
-
-                    if ticker_to_check:
-                        if ticker_to_check == item.ticker:
-                            logger.info(message + message_append)
-                    elif item.ticker not in tickers_to_ignore:
-                        logger.info(message + message_append)
-            else:
-                logger.warning(f"{message} | empty.")
-
-    if ticker_to_check:
-        logger.success(f"{ticker_to_check} {total_token} in total | {total_accounts_with_token}/{len(addresses)}.")
-    logger.success(f"{round(btc_total / btc_denom, btc_round)} $BTC in total.")

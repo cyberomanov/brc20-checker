@@ -3,9 +3,9 @@ from pydantic import BaseModel
 
 class UnisatItem(BaseModel):
     ticker: str
-    overallBalance: float
-    transferableBalance: float
-    availableBalance: float
+    overallBalance: int
+    transferableBalance: int
+    availableBalance: int
 
 
 class UnisatData(BaseModel):

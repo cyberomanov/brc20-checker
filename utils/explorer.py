@@ -1,10 +1,10 @@
+import asyncio
 import json
 
 import httpx
 from loguru import logger
 
 from datatypes import ExplorerResponse
-import asyncio
 
 
 async def get_btc_balance(address: str, client: httpx.AsyncClient) -> ExplorerResponse:
