@@ -88,7 +88,7 @@ async def main_checker():
 
 
 if __name__ == '__main__':
-    add_logger(version='v1.3')
+    add_logger(version='v1.4')
     try:
         asyncio.run(main_checker())
     except Exception as e:
