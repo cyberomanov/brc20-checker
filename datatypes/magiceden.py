@@ -4,28 +4,28 @@ from pydantic import BaseModel
 
 
 class Attribute(BaseModel):
-    value: str
-    trait_type: str
+    value: str | None
+    trait_type: str | None
 
 
 class Collection(BaseModel):
-    symbol: str
-    name: str
-    imageURI: str
-    chain: str
-    inscriptionIcon: str
-    description: str
-    supply: int
-    twitterLink: str
-    discordLink: str
-    websiteLink: str
-    createdAt: str
+    symbol: str | None
+    name: str | None
+    imageURI: str | None
+    chain: str | None
+    inscriptionIcon: str | None
+    description: str | None
+    supply: int | None
+    twitterLink: str | None
+    discordLink: str | None
+    websiteLink: str | None
+    createdAt: str | None
 
 
 class Meta(BaseModel):
-    name: str
-    attributes: List[Attribute]
-    high_res_img_url: str
+    name: str | None
+    attributes: List[Attribute] | None
+    high_res_img_url: str | None
 
 
 class MagicItem(BaseModel):
@@ -50,16 +50,17 @@ class MagicItem(BaseModel):
     collection: Collection | None
     satName: str | None
     satRarity: str | None
-    contentBody: Optional[str]
+    contentBody: Optional[str] | None
 
 
 class MagicResponse(BaseModel):
-    total: int
-    tokens: List[MagicItem]
+    total: int | None
+    tokens: List[MagicItem] | None
 
 
 class MagicDecodedItem(BaseModel):
-    p: str
-    op: str
-    tick: str
-    amt: int
+    p: str | None
+    op: str | None
+    tick: str | None
+    amt: int | None
+    name: str | None

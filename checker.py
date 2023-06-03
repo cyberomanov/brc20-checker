@@ -1,5 +1,5 @@
-from utils import *
 from config import *
+from utils import *
 
 
 async def main_checker():
@@ -17,7 +17,7 @@ async def main_checker():
             tasks = [
                 get_unisat_account(address=address, client=client),
                 get_btc_balance(address=address, client=client),
-                get_magic_tokens(address=address, client=client)
+                get_magic_tokens(address=address),
             ]
             results = await asyncio.gather(*tasks)
             unisat_account, btc_balance, magic_tokens = results[0], results[1], results[2]
@@ -35,6 +35,7 @@ async def main_checker():
                 for item in magic_unisat:
                     if type(magic_unisat[item]) == dict:
                         if item.upper() not in tickers_to_ignore and item.lower() not in tickers_to_ignore:
+                            # if magic_unisat[item]['total']:
                             tokens_message += f"{item.upper()} [transferable: {magic_unisat[item]['transferable']}, " \
                                               f"available: {magic_unisat[item]['available']}, " \
                                               f"total: {magic_unisat[item]['total']}], "
@@ -42,10 +43,9 @@ async def main_checker():
                         if item.upper() not in tickers_to_ignore and item.lower() not in tickers_to_ignore:
                             collections_message += f"{item.upper()} {magic_unisat[item]}, "
 
-                    if ticker_to_check == item:
-                        if 'total' in item:
-                            total_token += item['total']
-
+                    if ticker_to_check.lower() == item.lower():
+                        if 'total' in magic_unisat[item]:
+                            total_token += magic_unisat[item]['total']
                         else:
                             total_token += len(magic_unisat[item])
                         total_accounts_with_token += 1
