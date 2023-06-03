@@ -1,3 +1,4 @@
+cloudscraper==1.2.65
 httpx==0.24.1
 loguru==0.7.0
 pydantic==1.10.2
