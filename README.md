@@ -18,3 +18,9 @@ this script parses [unisat](https://unisat.io/market) and print all of your brc2
 2. setup your `config.py` and `data/btc.txt`;
 3. install requirements `pip3 install -r requirements.txt`
 4. run the script `python3 checker.py`
+
+## Update
+1. `cd brc20-checker`
+2. `git fetch && git pull`
+3. `pip3 install -r requirements.txt`
+4. `python3 checker.py`
